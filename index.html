@@ -21,7 +21,7 @@
 		}
 		</style>
 
-		<title>Presentation Title</title>
+		<title>A BIDS MRI Dataset Usecase: NCCR-SYNAPSY Early-Psychosis Dataset</title>
 
 		<meta name="description" content="TO BE COMPLETED">
 		<meta name="author" content="Sebastien Tourbier">
@@ -36,7 +36,7 @@
 		<link rel="stylesheet" href="reveal.js/dist/theme/black.css" id="theme">
 
 		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="reveal.js/plugin/highlight/monokai.css" id="highlight-theme">
+		<link rel="stylesheet" href="reveal.js/plugin/highlight/sublime-monokai.css" id="highlight-theme">
 
 	</head>
 
@@ -50,15 +50,15 @@
 				<section>
 					<br>
 					<br>
-					<h2>Presentation Title</h2>
+					<h2>A BIDS MRI Dataset Usecase</h2>
 					<p>
-						<small>RevealJS Template</small>
+						<small>NCCR-SYNAPSY Early-Psychosis Dataset</small>
 					</p>
 					<p>
 						<small>by <a href="https://wp.unil.ch/connectomics/sebastien-tourbier/">Sebastien Tourbier</a></small>
 					</p>
 					<p>
-						<small>DD MM 2021</small>
+						<small>31 08 2021</small>
 					</p>
 					<p>
 						<img data-src="images/synapsy_logo.png" alt="NCCR-Synapsy logo" style="height: 100px; margin: 0 auto 4rem auto; background: transparent;" class="demo-logo">
@@ -67,55 +67,230 @@
 				</section>
 
 				<section>
-					<h2>TRANSITION SLIDE</h2>
+
+					<section>
+						<h3>Early-Psychosis Dataset</h3>
+						<small>
+							<ul>
+								<li>Split into 2 datasets:
+									<ul>
+										<li>BIDS compliant dataset created from DICOMs: 346 subjects</li>
+										<li>Dataset of participants with missing DICOMs: 12 subjects</li>
+									</ul>
+								</li><br>
+								<li>BIDS dataset created from DICOMs validated with <a href="">bids-validator</a>:
+									<pre><code data-trim class="language-shell" style="word-wrap: break-word;">
+$ bids-validator "/media/localadmin/HagmannHDD/Seb/PsychoDev/NiftiBIDSCompliant" --ignoreSubjectConsistency
+bids-validator@1.7.2
+
+[...]
+
+        Summary:                   Available Tasks:        Available Modalities:
+        9212 Files, 47.25GB        rest                    MTR                  
+        346 - Subjects                                     T1w                  
+        6 - Sessions                                       T2map                
+                                                           dwi                  
+                                                           bold                  
+                                                           T1map                
+                                                           fieldmap              
+									</code></pre>
+								</li>
+							</ul>
+						</small>
+					</section>
+
+					<section>
+						<h3>Dataset history</h3>
+						<small>
+							<p>
+								<ul>
+									<li>Creation of pre-configured empty Datalad dataset</li><br>
+									<li>Copy the content of the initial BIDS dataset with a few problems such as the use of the acquisition date as a session label.</li><br>
+									<li>Edit the CHANGES
+										<pre><code data-trim class="language-nestedtext" style="word-wrap: break-word;">
+0.1 2021-06-05
+    - Initial commit of BIDS dataset after reconversion of DICOMs to Niftis using dcm2niix
+										</code></pre>
+									</li><br>
+									<li>Save the dataset with version tag 0.1</li>
+								</ul>
+							</p>
+						</small>
+					</section>
+
+					<section>
+						<h3>Dataset history</h3>
+						<small>
+							<p>
+								<ul>
+									<li>Add and run a script in code/ folder to fix BIDS validation errors</li><br>
+									<li>Validate dataset with the bids-validator</li><br>
+									<li>Edit the CHANGES
+										<pre><code data-trim class="language-nestedtext" style="word-wrap: break-word;">
+0.2 2021-07-07
+    - Create bidsify_dataset.py in code/ folder
+    - Run code/bidsify_dataset.py that:
+      * Add CHUV prefix to BIDS participant_id labels
+      * Change session labels from acquisition date to scan1, scan2, ...
+      * Add sub-&lt;label&gt;_sessions.tsv/.json files that stores the participant age in month and the acquisition time of each session
+      * Generate participants.tsv/.json files that stores the participant sex and the group
+  										</code></pre>
+									</li><br>
+									<li>Save the dataset with version tag 0.2</li><br>
+									<li>Publish the dataset to our instutional data storage accessible via <b>ssh</b></li>
+								</ul>
+							</p>
+						</small>
+					</section>
+
+					<section>
+						<h3>Dataset availability</h3>
+						<small>
+							<p align="left">
+								<b>Until now</b>
+									<ul>
+										<li>Dataset can be installed/cloned with:
+											<pre><code data-trim class="language-shell" style="word-wrap: break-word; max-width: 200">
+	$ datalad clone ssh://&lt;user&gt;@stockage-horus.chuv.ch/:/archive/PRTNR/CHUV/RADMED/phagmann/biopsycho/NiftiBIDSCompliant
+	  										</code></pre>
+	  										<b>Note:</b> one needs to be inside CHUV intranet or to use CHUV VPN and have access to <a style="color:chocolate">stockage-horus</a> to be able to clone the dataset
+	  									</li><br>
+	  								</ul>
+	  						</p>
+	  						<p align="left">
+								<b>In the near future</b>
+									<ul>
+										<li>Dataset could be installed/cloned with:
+											<pre><code data-trim class="language-shell" style="word-wrap: break-word; max-width: 200">
+	$ datalad clone git@github.com:NCCR-SYNAPSY/ds-biopsycho
+	  										</code></pre>
+	  										<b>Note:</b> everybody would be able to clone the dataset from GitHub but one still needs to be inside CHUV intranet or to use CHUV VPN and have access to <a style="color:chocolate">stockage-horus</a> to be able to retrieve the content of the files
+	  									</li>
+									</ul>
+							</p>
+						</small>
+					</section>
 				</section>
 
 				<section>
-					<h3>Slide with list and small font size</h3>
-					<p>
-							<ul>		
-								<li> item 1
-								</li><br>
-								
-								<li> item 2<br><br>
+
+					<section>
+						<h2>Tips, tricks and demographic requirements</h2>
+					</section>
+
+					<section>
+						<h3>How to deal with longitudinal and multi-site studies</h3>
+						<small>
+						<p style="text-align: left">
+							<b>BIDS-compliant solution</b>
+							<ul style="display: block">
+								<li>Add an extra layer of directories and file names in the form of <a style="color:chocolate">ses-&lt;label&gt;</a> to encode multiple sessions (visits)</li>
+								<li>Use a subject label prefix identifying the site (CHUV here)
+							</ul>
+						</p>
+						<pre><code data-trim class="language-nestedtext" style="word-wrap: break-word;">
+├── sub-CHUVA001
+│   ├── ses-scan1
+│   │   ├── anat
+│   │   │   ├── sub-CHUVA001_ses-scan1_run-1_T1w.json
+│   │   │   ├── sub-CHUVA001_ses-scan1_run-1_T1w.nii.gz
+│   │   │   ├── ...					
+						</code></pre>
+						<p style="text-align: left">
+							Reference: <a href="https://bids-specification.readthedocs.io/en/stable/06-longitudinal-and-multi-site-studies.html">Longitudinal and multi-site studies</a> section of the specifications
+						</p>
+						</small>
+					</section>
+
+					<section>
+						<h3>How to deal with similar MRI acquired during the same session</h3>
+						<small>
+						<p style="text-align: left">
+							<b>BIDS-compliant solution</b>
+							<ul style="display: block">
+								<li>Use BIDS <a style="color:chocolate">_run-&lt;label&gt;_</a> entity to differenciate scans with same acquisition parameters</li>
+								<li>Use BIDS <a style="color:chocolate">_acq-&lt;label&gt;_</a> entity to differenciate similar scans with different acquisition parameters</li>
+							</ul>
+							<pre><code data-trim class="language-nestedtext" style="word-wrap: break-word;">
+├── sub-CHUVA022
+│   ├── ses-scan1
+│   │   ├── anat
+│   │   │   ├── sub-CHUVA022_ses-scan1_run-1_T1w.json
+│   │   │   ├── sub-CHUVA022_ses-scan1_run-1_T1w.nii.gz
+│   │   │   ├── sub-CHUVA022_ses-scan1_run-2_T1w.json
+│   │   │   ├── sub-CHUVA022_ses-scan1_run-2_T1w.nii.gz
+│   │   │   ├── ...			
+│   │   ├── dwi
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-dsiNdir129_run-1_dwi.bval
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-dsiNdir129_run-1_dwi.bvec
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-dsiNdir129_run-1_dwi.json
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-dsiNdir129_run-1_dwi.nii.gz
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-hardiNdir147Bval3000_run-1_dwi.bval
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-hardiNdir147Bval3000_run-1_dwi.bvec
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-hardiNdir147Bval3000_run-1_dwi.json
+│   │   │   ├── sub-CHUVA022_ses-scan1_acq-hardiNdir147Bval3000_run-1_dwi.nii.gz		
+							</code></pre>
+						</p>
+						<p style="text-align: left">
+							Reference: <a href="https://bids-specification.readthedocs.io/en/stable/99-appendices/09-entities.html#run">Entities</a> section of the specifications
+						</p>
+						</small>
+					</section>
+
+					<section>
+						<h3>Requirements for demographic information</h3>
+						<small>
+						<p style="text-align: left">	
+							<ul style="display: block">
+								<li>At least <a style="color:dodgerblue">participant_id</a>, <a style="color:dodgerblue">age</a>, <a style="color:dodgerblue">sex</a> and <a style="color:dodgerblue">group</a> MUST BE REPORTED</li>
+								<br>
+								<li>If the study IS longitudinal:
 									<ul>
-										<small>
-											<li>item <a style="color:dodgerblue">2.1</a></li><br>
-											<li>item <a style="color:chocolate">2.2</a></li>
-										</small>
+										<li><a style="color:dodgerblue">participant_id</a>, <a style="color:dodgerblue">sex</a> and <a style="color:dodgerblue">group</a> MUST be reported in the <a style="color:chocolate">participants.tsv</a> file</li>
+										<li><a style="color:dodgerblue">age</a> MUST be reported in the <a style="color:chocolate">session.tsv</a> file</li>
 									</ul>
 								</li>
-								
+								<br>
+								<li>If the study IS NOT longitudinal:
+									<ul>
+										<li><a style="color:dodgerblue">participant_id</a>, <a style="color:dodgerblue">age</a>, <a style="color:dodgerblue">sex</a>, <a style="color:dodgerblue">age</a>, and <a style="color:dodgerblue">group</a> MUST be reported in the <a style="color:chocolate">participants.tsv</a> file</li>
+									</ul>
+								</li>
+								<br>
+								<li>Age MUST BE REPORTED in months to account for cases with multiple acquisition sessions in a given year</li>
+								<br>
+								<li>All columns (except participant_id) MUST BE DESCRIBED in the <a style="color:chocolate">participants.json</a> / <a style="color:chocolate">session.json</a></li>
 							</ul>
-						
-					</p>
-
-				</section>
-
-				<section>
-					<section>
-						<h2>Section title slide</h2>
+						</p>
+						</small>
 					</section>
 
 					<section>
-						<h3>Slide with centered image</h3>
-
-						<center>
-							<img data-src="images/synapsy_logo.png" alt="A centered image" style="height: 480px; margin: 0.5rem 0.5rem 0.5rem a0.5rem; background: transparent;" class="demo-logo">
-						</center>
+						<h3>Some other recommendations</h3>
+						<small>
+							<p style="text-align: left">	
+								<ul style="display: block">
+									<li>
+										<a style="color:chocolate">Never keep the acquisition date in the session label</a>: this might enable the identification of the scanned individual even if MRI was anonymized or de-identified
+									</li>
+									<br>
+									<li>
+										<a style="color:chocolate">Keep the README of the dataset the most informative</a>: it is the first information a user will have access to.
+									</li>
+									<br>
+									<li>
+										<a style="color:chocolate">De-identify MRI with a defacing tool</a> such as <a href="https://github.com/poldracklab/pydeface">pydeface</a> if the intent is to release the dataset publicly.<br><br>
+										Please check <a href="https://doi.org/10.3389/fpsyt.2021.617997">this paper (Athena E. Theyers et al, 2021)</a> for a comparison of multiple defacing tools.
+									</li>
+									<br>
+									<li>
+										<a style="color:chocolate">Install bids-validator locally if the dataset is big</a>; the online validator is very slow. See the <a href="https://github.com/bids-standard/bids-validator">bids-validator Github repo</a> for more details.
+									</li>
+								</ul>
+							</p>
+						</small>
 					</section>
 
-					<section data-background-iframe="https://nccr-synapsy.ch/" data-background-interactive>
-						<div style="position: absolute; width: 40%; right: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.5), 0 5px 25px rgba(0,0,0,0.2); background-color: rgba(0, 0, 0, 0.9); color: #fff; padding: 20px; font-size: 30px; text-align: left;">
-							<h2>Slide with embedded HTML page</h2>
-							<small><a href="https://nccr-synapsy.ch/">https://nccr-synapsy.ch/</a></small>
-						</div>
-					</section>	
-
-				</section>
-
-				<section>
-					<h3>Thank you for your attention!</h3>
 				</section>
 
 			</div>
